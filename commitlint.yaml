@@ -1,1 +1,14 @@
 include: package:commitlint_cli/commitlint.yaml
+
+rules:
+  scope-enum:
+    - 0
+
+    # - 2 # erreur bloquante
+    - always
+    # - - player
+    #   - ui
+    #   - core
+    #   - ci
+    #   - deps
+    #   - release
