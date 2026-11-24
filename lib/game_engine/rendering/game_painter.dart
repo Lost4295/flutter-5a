@@ -1,4 +1,3 @@
-
 import 'dart:math' as math;
 
 import 'package:material_ui/material_ui.dart';
@@ -10,17 +9,19 @@ import '../models/tile_type.dart';
 class GamePainter extends CustomPainter {
   final GameLoop gameLoop;
 
-  final Paint _backgroundPaint =
-      Paint()..color = const Color(0xFF17212B);
+  final Paint _backgroundPaint = Paint()..color = const Color(0xFF17212B);
 
-  final Paint _emptyPaint =
-      Paint()..color = const Color(0xFF34495E);
+  final Paint _emptyPaint = Paint()..color = const Color(0xFF34495E);
 
-  final Paint _wallPaint =
-      Paint()..color = const Color(0xFF687C8F);
+  final Paint _wallPaint = Paint()..color = const Color(0xFF687C8F);
 
-  final Paint _blockPaint =
-      Paint()..color = const Color(0xFFB97745);
+  final Paint _blockPaint = Paint()..color = const Color(0xFFB97745);
+  final Paint _playerPaint = Paint()..color = const Color(0xFF3498DB);
+
+  final Paint _playerBorderPaint = Paint()
+    ..color = Colors.white
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 3;
 
   final Paint _gridPaint = Paint()
     ..color = const Color(0xFF263746)
@@ -37,10 +38,7 @@ class GamePainter extends CustomPainter {
     final columns = GameConstants.mapColumns;
 
     // Adaptation de la taille de la carte à l'écran
-    final tileSize = math.min(
-      size.width / columns,
-      size.height / rows,
-    );
+    final tileSize = math.min(size.width / columns, size.height / rows);
 
     final boardWidth = tileSize * columns;
     final boardHeight = tileSize * rows;
@@ -48,10 +46,7 @@ class GamePainter extends CustomPainter {
     final offsetX = (size.width - boardWidth) / 2;
     final offsetY = (size.height - boardHeight) / 2;
 
-    canvas.drawRect(
-      Offset.zero & size,
-      _backgroundPaint,
-    );
+    canvas.drawRect(Offset.zero & size, _backgroundPaint);
 
     canvas.save();
     canvas.translate(offsetX, offsetY);
@@ -88,7 +83,23 @@ class GamePainter extends CustomPainter {
         canvas.drawRect(rect, _gridPaint);
       }
     }
+    // Échelle entre les coordonnées du jeu et celles de l'écran
+    final scale = tileSize / GameConstants.tileSize;
 
+    for (final player in gameLoop.state.players) {
+      if (!player.isAlive) continue;
+
+      final playerCenter = Offset(
+        player.position.dx * scale,
+        player.position.dy * scale,
+      );
+
+      final radius = 14.0 * scale;
+
+      canvas.drawCircle(playerCenter, radius, _playerPaint);
+
+      canvas.drawCircle(playerCenter, radius, _playerBorderPaint);
+    }
     canvas.restore();
   }
 
