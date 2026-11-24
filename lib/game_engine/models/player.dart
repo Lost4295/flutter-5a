@@ -1,6 +1,8 @@
 
 import 'dart:ui';
 
+import 'package:bomberman_multiplayer/core/constants/game_constants.dart';
+
 class Player {
   final int id;
   Offset position;
@@ -16,9 +18,28 @@ class Player {
     required this.id,
     required this.position,
     this.velocity = Offset.zero,
-    this.health = 1,
+    this.health = GameConstants.defaultPlayerHealth,
     this.bombCapacity = 1,
-    this.explosionRange = 2,
+    this.explosionRange = GameConstants.defaultExplosionRange,
     this.isAlive = true,
   });
+  // Déplacer le joueur vers une case spécifique sur la carte
+  void moveToTile(int newRow, int newColumn) {
+    position = Offset(
+      newColumn * GameConstants.tileSize + GameConstants.tileSize / 2,
+      newRow * GameConstants.tileSize + GameConstants.tileSize / 2,
+    );
+  }
+
+// Mise à jour de la position selon la vitesse
+void updatePosition(double dt) {
+  if (!isAlive) return;
+
+  position += velocity * dt;
+}
+
+  // Éliminer le joueur
+  void eliminate() {
+    isAlive = false;
+  }
 }
