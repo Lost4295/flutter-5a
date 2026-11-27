@@ -5,15 +5,17 @@ class Bomb {
   final int id;
   final int ownerId;
   final Offset position;
+  final int explosionRange;
 
   double remainingTime;
-  final int explosionRange;
+  bool hasExploded;
 
   Bomb({
     required this.id,
     required this.ownerId,
     required this.position,
+    required this.explosionRange,
     this.remainingTime = 3.0,
-    this.explosionRange = 2,
+    this.hasExploded = false,
   });
 }
