@@ -19,7 +19,7 @@ class Player {
     required this.position,
     this.velocity = Offset.zero,
     this.health = GameConstants.defaultPlayerHealth,
-    this.bombCapacity = 1,
+    this.bombCapacity = 3,
     this.explosionRange = GameConstants.defaultExplosionRange,
     this.isAlive = true,
   });

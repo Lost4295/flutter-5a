@@ -90,5 +90,6 @@ class GameState {
       players,
       dt,
     );
+    bombSystem.removeExplodedBombs();
   }
 }

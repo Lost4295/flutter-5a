@@ -19,18 +19,23 @@ class ExplosionSystem {
     double dt,
   ) {
     // Déclenche les nouvelles explosions.
-    final pendingBombs = bombs
-        .where(
-          (bomb) =>
-              bomb.hasExploded &&
-              !_processedBombIds.contains(bomb.id),
-        )
-        .toList();
+// Traite aussi les bombes déclenchées en chaîne.
+while (true) {
+  final pendingBombs = bombs
+      .where(
+        (bomb) =>
+            bomb.hasExploded &&
+            !_processedBombIds.contains(bomb.id),
+      )
+      .toList();
 
-    for (final bomb in pendingBombs) {
-      _processedBombIds.add(bomb.id);
-      _createExplosion(bomb, bombs, map, players);
-    }
+  if (pendingBombs.isEmpty) break;
+
+  for (final bomb in pendingBombs) {
+    _processedBombIds.add(bomb.id);
+    _createExplosion(bomb, bombs, map, players);
+  }
+}
 
     // Met à jour la durée des flammes.
     for (final explosion in explosions) {
