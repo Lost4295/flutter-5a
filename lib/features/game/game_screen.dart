@@ -17,7 +17,6 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen>
     with SingleTickerProviderStateMixin {
-
   late final Ticker _ticker;
   late final GameLoop _gameLoop;
   late final PlayerInputSystem _inputSystem;
@@ -83,6 +82,16 @@ class _GameScreenState extends State<GameScreen>
     if (_gameLoop.state.players.isEmpty) return;
 
     final player = _gameLoop.state.players.first;
+
+    // Pose d'une bombe avec la barre Espace.
+    if (event.logicalKey == LogicalKeyboardKey.space) {
+      if (event is KeyDownEvent) {
+        _gameLoop.state.bombSystem.placeBomb(player);
+      }
+      return;
+    }
+
+    // Gestion des déplacements.
     final direction = _directionForKey(event.logicalKey);
 
     if (direction == null) return;
